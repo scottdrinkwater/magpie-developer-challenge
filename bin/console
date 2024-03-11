@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+require  dirname(__DIR__) . '/vendor/autoload.php';
+
+use App\App;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+$container = new ContainerBuilder();
+
+(new PhpFileLoader($container, new FileLocator(dirname(__DIR__) . '/config')))
+    ->load('services.php');
+
+$container->compile(true);
+
+($container->get(App::class))
+    ->run();
