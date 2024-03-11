@@ -59,13 +59,14 @@ class ScrapePhonesCommand extends Command
         $pageCount = $scraperService->getPageCount();
         $entities = $scraperService->getEntities();
 
-        for ($pageNumber = 2; $pageNumber <= $pageCount; $pageNumber++) {
-            $page = $this->crawlerService->fetchPage($pageNumber);
-            $scraperService = new PhoneScraperService($page);
-            
-            $entities = array_merge($entities, $scraperService->getEntities());
+        if ($pageCount > 1) {
+            for ($pageNumber = 2; $pageNumber <= $pageCount; $pageNumber++) {
+                $page = $this->crawlerService->fetchPage($pageNumber);
+                $scraperService = new PhoneScraperService($page);
+    
+                $entities = array_merge($entities, $scraperService->getEntities());
+            }
         }
-
 
         $phones = $this->phoneTransformer->transformMany($entities);
         $phonesJson = json_encode($phones);
