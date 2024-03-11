@@ -131,7 +131,7 @@ final class PhoneMapper implements ProductMapperInterface
         if (!$dateText) {
             return null;
         }
-        $dateString = trim(preg_split('/ (on|by|from) /', $dateText)[1] ?? '');
+        $dateString = trim(preg_split('/ (on|by|from|Delivers|Delivery) /', $dateText)[1] ?? '');
         try {
             return $dateString ? CarbonImmutable::parse($dateString) : null;
         } catch (\Exception $e) {   
