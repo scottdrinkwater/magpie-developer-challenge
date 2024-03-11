@@ -6,6 +6,7 @@
 
 ### If I had more time
 
+- Image URL's are relative paths
 - More test coverage across services / transformer / command.
 - Feature tests actually hitting the endpoint.
 - Clean-up how `$colour` gets passed into transformer - anti open-closed principle 
