@@ -126,12 +126,16 @@ final class PhoneMapper extends BaseProductMapper
     private function getShippingDate(): ?\DateTimeImmutable
     {
         $dateText = $this->getShippingText();
+
         if (!$dateText) {
             return null;
         }
+
         $dateSegments = preg_split(self::EXTRACT_SHIPPING_DATE_PATTERN, $dateText);
         $lastDateSegmentsIndex = count($dateSegments) - 1;
+        // The last part of the shipping text contains the date
         $dateString = trim($dateSegments[$lastDateSegmentsIndex] ?? '');
+
         try {
             return $dateString ? CarbonImmutable::parse($dateString) : null;
         } catch (\Exception $e) {   
