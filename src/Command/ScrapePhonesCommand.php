@@ -23,10 +23,12 @@ class ScrapePhonesCommand extends Command
     public const NAME = 'scrape:phones:json';
 
     public function __construct(
-        private CrawlerService $crawlerService
+        private CrawlerService $crawlerService,
+        private PhoneTransformer $phoneTransformer
     ) {
         parent::__construct();
         $this->crawlerService = $crawlerService;
+        $this->phoneTransformer = $phoneTransformer;
     }
 
     /**
@@ -58,7 +60,7 @@ class ScrapePhonesCommand extends Command
         }
 
 
-        $phones = PhoneTransformer::transformMany($entities);
+        $phones = $this->phoneTransformer->transformMany($entities);
         $phonesJson = json_encode($phones);
 
         $filesystem = new Filesystem();

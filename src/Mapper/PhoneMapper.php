@@ -62,7 +62,6 @@ final class PhoneMapper implements ProductMapperInterface
 
     private function getImage(): string
     {
-        // TODO: Make full url for page, not relative
         return $this->page->filter('img')->attr('src');
     }
 

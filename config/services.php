@@ -3,6 +3,7 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use App\Services\CrawlerService;
+use App\Transformer\PhoneTransformer;
 use GuzzleHttp\Client;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Dotenv\Dotenv;
@@ -44,4 +45,10 @@ return static function (ContainerConfigurator $configurator, ContainerBuilder $c
         ->public()
         ->tag('app.services.crawler_service')
         ->arg('$url', '%env(SCRAPE_TARGET_URL)%');
+
+    $services
+        ->set(PhoneTransformer::class)
+        ->public()
+        ->tag('app.transformers.phone')
+        ->arg('$siteUrl', '%env(SCRAPE_TARGET_URL)%');
 };
