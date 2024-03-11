@@ -12,6 +12,9 @@ use Symfony\Component\DomCrawler\Crawler;
 abstract class BaseScraperService
 {
 
+    /**
+     * @param Crawler $page
+     */
     public function __construct(
         protected Crawler $page
     ) {

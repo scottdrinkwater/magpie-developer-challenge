@@ -12,6 +12,10 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 final class CrawlerService
 {
+    /**
+     * @param Client $client
+     * @param string $url
+     */
     public function __construct(
         private Client $client,
         private string $url
@@ -19,6 +23,10 @@ final class CrawlerService
         $this->client = $client;
     }
 
+    /**
+     * @param integer $page
+     * @return Crawler
+     */
     public function fetchPage(int $page = 1): Crawler
     {
         $queryParams = '?page=' . $page;

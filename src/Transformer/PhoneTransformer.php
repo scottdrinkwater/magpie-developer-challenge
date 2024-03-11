@@ -8,11 +8,21 @@ use App\Entity\Phone;
 
 final class PhoneTransformer
 {
+    /**
+     * @param string $siteUrl
+     */
     public function __construct(private string $siteUrl)
     {
         $this->siteUrl = $siteUrl;
     }
 
+    /**
+     * Transform a Phone entity into an array of the desired format.
+     *
+     * @param Phone $phone
+     * @param string $colour
+     * @return array
+     */
     public function transform(Phone $phone, string $colour): array
     {
         return [ 
@@ -29,7 +39,7 @@ final class PhoneTransformer
     }
 
     /**
-     * Transform a de-duped array of Phones.
+     * Transform an array of Phone entities into a de-duped array in the desired format.
      *
      * @param  Phone[] $phones
      * @return array
@@ -50,6 +60,12 @@ final class PhoneTransformer
         return $transformedPhones;
     }
 
+    /**
+     * Get's the base URL for an image, catering for relative paths.
+     *
+     * @param integer $traverseUpDirectoryCount
+     * @return string
+     */
     private function getBaseImageUrl($traverseUpDirectoryCount = 0): string
     {
         // Removing trailing slash on URL first, if applicable
@@ -61,6 +77,12 @@ final class PhoneTransformer
         return implode('/', $imageUrl) . '/'; 
     }
 
+    /**
+     * Convert a relative image path to the full remote path.
+     *
+     * @param string $imageSrc
+     * @return string
+     */
     private function getExternalImageSrc(string $imageSrc): string
     {
         // How many directories to traverse up.

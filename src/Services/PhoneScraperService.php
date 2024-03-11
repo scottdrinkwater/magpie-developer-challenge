@@ -13,6 +13,9 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 final class PhoneScraperService extends BaseScraperService
 {
+    /**
+     * @return integer
+     */
     public function getPageCount(): int
     {
         return $this->page->filter('#pages a')->count();

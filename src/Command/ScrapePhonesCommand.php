@@ -22,6 +22,10 @@ class ScrapePhonesCommand extends Command
      */
     public const NAME = 'scrape:phones:json';
 
+    /**
+     * @param CrawlerService $crawlerService
+     * @param PhoneTransformer $phoneTransformer
+     */
     public function __construct(
         private CrawlerService $crawlerService,
         private PhoneTransformer $phoneTransformer
