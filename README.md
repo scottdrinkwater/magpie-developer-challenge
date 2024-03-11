@@ -6,11 +6,9 @@
 
 ### If I had more time
 
-- Image URL's are relative paths
 - More test coverage across services / transformer / command.
 - Feature tests actually hitting the endpoint.
 - Clean-up how `$colour` gets passed into transformer - anti open-closed principle 
-- Missing doc blocks on some classes
 - Make some of the logic for parsing data (e.g. shipping date delimiters) configuration based.
 - Get a pipeline / grunt working for auto lint / testing.
 
