@@ -8,7 +8,7 @@ use Carbon\CarbonImmutable;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Utils\ArrayHelper;
 
-final class PhoneMapper implements ProductMapperInterface
+final class PhoneMapper extends BaseProductMapper
 {
     /**
      * @param Crawler $page
@@ -63,10 +63,8 @@ final class PhoneMapper implements ProductMapperInterface
      */
     private function getPrice(): float
     {
-        // To make more extendable should search an array of potential currencies.
-        $currencySymbol = '£';
-        $priceText = $this->findDivContainingText([$currencySymbol])->text();
-        $price = str_replace($currencySymbol, '', $priceText);
+        $priceText = $this->findDivContainingText(self::CURRENCY_SYMBOLS)->text();
+        $price = str_replace(self::CURRENCY_SYMBOLS, '', $priceText);
 
         return (float) trim($price);
     }
@@ -110,7 +108,7 @@ final class PhoneMapper implements ProductMapperInterface
      */
     private function getIsAvailable(): bool
     {
-        return stripos($this->getAvailabilityText(), 'In Stock') !== false;
+        return ArrayHelper::stripos($this->getAvailabilityText(), self::IS_IN_STOCK_IDENTIFIERS);
     }
 
     /**
@@ -118,7 +116,7 @@ final class PhoneMapper implements ProductMapperInterface
      */
     private function getShippingText(): string
     {
-        $node = $this->findDivContainingText(['deliver', 'available', 'shipping']);
+        $node = $this->findDivContainingText(self::SHIPPING_TEXT_NODE_IDENTIFIERS);
         return $node->count() > 0 ? $node->text() : '';
     }
 
@@ -131,7 +129,7 @@ final class PhoneMapper implements ProductMapperInterface
         if (!$dateText) {
             return null;
         }
-        $dateSegments = preg_split('/(on|by|from|Delivers|Delivery) /', $dateText);
+        $dateSegments = preg_split(self::EXTRACT_SHIPPING_DATE_PATTERN, $dateText);
         $lastDateSegmentsIndex = count($dateSegments) - 1;
         $dateString = trim($dateSegments[$lastDateSegmentsIndex] ?? '');
         try {
