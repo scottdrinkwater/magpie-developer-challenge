@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-class Phone implements ProductInterface {
+class Phone implements ProductInterface
+{
     public function __construct(
         public string $title, 
         public float $price, 

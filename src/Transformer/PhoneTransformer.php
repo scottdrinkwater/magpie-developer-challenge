@@ -6,7 +6,8 @@ namespace App\Transformer;
 
 use App\Entity\Phone;
 
-final class PhoneTransformer {
+final class PhoneTransformer
+{
     public static function transform(Phone $phone, string $colour): array
     {
         return [ 
@@ -25,7 +26,7 @@ final class PhoneTransformer {
     /**
      * Transform a de-duped array of Phones.
      *
-     * @param Phone[] $phones
+     * @param  Phone[] $phones
      * @return array
      */
     public static function transformMany(array $phones): array

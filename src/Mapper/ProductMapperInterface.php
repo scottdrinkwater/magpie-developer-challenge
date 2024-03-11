@@ -6,7 +6,8 @@ namespace App\Mapper;
 use App\Entity\ProductInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
-interface ProductMapperInterface {
+interface ProductMapperInterface
+{
     public function __construct(Crawler $page);
     public function toEntity(): ProductInterface;
     public static function fromCrawler(Crawler $page): self;

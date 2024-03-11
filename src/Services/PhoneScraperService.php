@@ -13,7 +13,8 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 final class PhoneScraperService extends BaseScraperService
 {
-    public function getPageCount(): int {
+    public function getPageCount(): int
+    {
         return $this->page->filter('#pages a')->count();
     }
 
@@ -22,7 +23,8 @@ final class PhoneScraperService extends BaseScraperService
      *
      * @return Phone[]
      */
-    public function getEntities(): array {
+    public function getEntities(): array
+    {
         return $this->page
             ->filter('.product')
             ->each(fn (Crawler $node) => PhoneMapper::fromCrawler($node)->toEntity());

@@ -8,15 +8,18 @@ use Carbon\CarbonImmutable;
 use Symfony\Component\DomCrawler\Crawler;
 use App\Utils\ArrayHelper;
 
-final class PhoneMapper implements ProductMapperInterface {
-    public function __construct(private Crawler $page) {
+final class PhoneMapper implements ProductMapperInterface
+{
+    public function __construct(private Crawler $page)
+    {
         $this->page = $page;
     }
 
     /**
      * @return Phone
      */
-    public function toEntity(): Phone {
+    public function toEntity(): Phone
+    {
         return new Phone(
             $this->getTitle(),
             $this->getPrice(),
@@ -33,11 +36,13 @@ final class PhoneMapper implements ProductMapperInterface {
     /**
      * @return self
      */
-    public static function fromCrawler(Crawler $page): self {
+    public static function fromCrawler(Crawler $page): self
+    {
         return new self($page);
     }
 
-    private function getTitle(): string {
+    private function getTitle(): string
+    {
         return trim(
             $this->page
                 ->filter(".product-name")
@@ -45,7 +50,8 @@ final class PhoneMapper implements ProductMapperInterface {
         );   
     }
 
-    private function getPrice(): float {
+    private function getPrice(): float
+    {
         // To make more extendable should search an array of potential currencies.
         $currencySymbol = '£';
         $priceText = $this->findDivContainingText([$currencySymbol])->text();
@@ -54,35 +60,42 @@ final class PhoneMapper implements ProductMapperInterface {
         return (float) trim($price);
     }
 
-    private function getImage(): string {
+    private function getImage(): string
+    {
         // TODO: Make full url for page, not relative
         return $this->page->filter('img')->attr('src');
     }
 
-    private function getCapacity(): int {
+    private function getCapacity(): int
+    {
         return (int) $this->page->filter('.product-capacity')->text() * 1000;
     }
 
-    private function getColours(): array {
+    private function getColours(): array
+    {
         return $this->page->filter('span.rounded-full')->each(fn ($circle) => $circle->attr('data-colour'));
     }
 
-    private function getAvailabilityText(): string {
+    private function getAvailabilityText(): string
+    {
         $availabilityText =  $this->findDivContainingText(['Availability:'])->text();
 
-        return trim(str_replace('Availability:','', $availabilityText));
+        return trim(str_replace('Availability:', '', $availabilityText));
     }
 
-    private function getIsAvailable(): bool {
+    private function getIsAvailable(): bool
+    {
         return stripos($this->getAvailabilityText(), 'In Stock') !== false;
     }
 
-    private function getShippingText(): string {
+    private function getShippingText(): string
+    {
         $node = $this->findDivContainingText(['deliver', 'available', 'shipping']);
         return $node->count() > 0 ? $node->text() : '';
     }
 
-    private function getShippingDate(): ?\DateTimeImmutable {
+    private function getShippingDate(): ?\DateTimeImmutable
+    {
         $dateText = $this->getShippingText();
         if (!$dateText) {
             return null;
@@ -98,10 +111,11 @@ final class PhoneMapper implements ProductMapperInterface {
     /**
      * Find a node on the page containing the provided text.
      *
-     * @param string[] $text
+     * @param  string[] $text
      * @return Crawler
      */
-    private function findDivContainingText(array $text): Crawler {
+    private function findDivContainingText(array $text): Crawler
+    {
         return $this->page
             ->filter("div div div")
             ->reduce(fn (Crawler $node) => ArrayHelper::stripos($node->text(), $text));
