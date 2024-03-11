@@ -1,0 +1,5 @@
+#!/bin/bash
+
+vendor/bin/phpcbf src
+vendor/bin/phpcbf bin
+vendor/bin/phpcbf config
