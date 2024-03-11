@@ -45,6 +45,25 @@ class ScrapePhonesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $outputFilePath = $input->getArgument('output');
+
+        $page = $this->crawlerService->fetchPage(1);
+        $scraperService = new PhoneScraperService($page);
+        $pageCount = $scraperService->getPageCount();
+        $entities = $scraperService->getEntities();
+        for ($pageNumber = 2; $pageNumber <= $pageCount; $pageNumber++) {
+            $page = $this->crawlerService->fetchPage($pageNumber);
+            $scraperService = new PhoneScraperService($page);
+            $entities = array_merge($entities, $scraperService->getEntities());
+        }
+
+
+        $phones = PhoneTransformer::transformMany($entities);
+        $phonesJson = json_encode($phones);
+
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile($outputFilePath, $phonesJson);
+
         return 0;
     }
 }
